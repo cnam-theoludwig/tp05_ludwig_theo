@@ -1,27 +1,50 @@
-<div class="flex flex-col justify-center items-center my-6 space-y-2">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="lucide lucide-shopping-cart size-14"
-  >
-    <circle cx="8" cy="21" r="1" />
-    <circle cx="19" cy="21" r="1" />
-    <path
-      d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"
-    />
-  </svg>
-
-  <h2>Panier</h2>
-  <p>
-    Votre panier est vide.
-
-    <a routerLink="/">Choisir des produits ?</a>
-  </p>
-</div>
+@if (products$ | async; as productsList) {
+  @if (productsList.length > 0) {
+    <h2>Panier</h2>
+    <ul class="space-y-4 my-10">
+      @for (product of productsList; track product.id) {
+        <li class="flex justify-between items-center border-b pb-4">
+          <div class="flex-1 space-y-1">
+            <h3 class="text-lg font-semibold">{{ product.title }}</h3>
+            <p class="text-gray-500">
+              {{ product.priceCents / 100 | currency: "EUR" }}
+            </p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button
+              type="button"
+              class="w-8 text-lg font-semibold px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+              (click)="removeProduct(product)"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              class="w-16 p-1 border rounded text-center"
+              [value]="product.quantity"
+              min="0"
+              step="1"
+              (change)="updateQuantity(product, $event)"
+            />
+            <button
+              type="button"
+              class="w-8 text-lg font-semibold px-2 py-1 bg-gray-200 rounded hover:bg-gray-300"
+              (click)="addProduct(product)"
+            >
+              +
+            </button>
+          </div>
+        </li>
+      }
+    </ul>
+    @if (totalPriceCents$ | async; as totalPriceCents) {
+      <div class="my-6 text-right text-xl font-semibold">
+        Total : {{ totalPriceCents / 100 | currency: "EUR" }}
+      </div>
+    }
+  } @else {
+    <app-cart-empty></app-cart-empty>
+  }
+} @else {
+  <app-cart-empty></app-cart-empty>
+}
