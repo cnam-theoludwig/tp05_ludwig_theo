@@ -1,6 +1,14 @@
 @if (products$ | async; as productsList) {
   @if (productsList.length > 0) {
-    <h2>Panier</h2>
+    <h2>
+      Panier
+      @if (productsCount$ | async; as productsCount) {
+        <span class="text-sm text-gray-darker">
+          ({{ productsCount }}
+          {{ productsCount === 1 ? "produit" : "produits" }})
+        </span>
+      }
+    </h2>
     <ul class="space-y-4 my-10">
       @for (product of productsList; track product.id) {
         <li class="flex justify-between items-center border-b pb-4">

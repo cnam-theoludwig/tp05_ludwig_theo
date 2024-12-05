@@ -23,6 +23,10 @@ export class CartPageComponent {
     CartState.getProducts,
   )
 
+  public productsCount$: Observable<number> = inject(Store).select(
+    CartState.getProductsCount,
+  )
+
   public totalPriceCents$: Observable<number> = inject(Store).select(
     CartState.getTotalPriceCents,
   )
