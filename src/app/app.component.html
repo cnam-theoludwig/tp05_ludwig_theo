@@ -1,9 +1,36 @@
 <app-header />
 
 <main
-  class="md:mx-auto md:max-w-4xl lg:max-w-[1680px] px-6 min-h-[calc(100vh-127px)]"
+  class="md:mx-auto md:max-w-4xl lg:max-w-7xl px-6 min-h-[calc(100vh-152px)]"
 >
-  <p>Hello, world!</p>
+  <section class="my-6">
+    <form
+      class="flex flex-col sm:flex-row justify-between gap-4"
+      (submit)="onSubmit($event)"
+    >
+      <app-input-search
+        placeholder="Rechercher..."
+        (changeSearch)="handleSearch($event)"
+        [search]="queryParams$.value.search"
+        class="grow"
+      ></app-input-search>
+
+      <app-select-category
+        (selectCategory)="handleCategory($event)"
+        [categoryId]="queryParams$.value.categoryId"
+      ></app-select-category>
+    </form>
+
+    @if (products$ | async; as productsList) {
+      @if (isLoading) {
+        <app-product-list-skeleton></app-product-list-skeleton>
+      } @else {
+        <app-product-list [products]="productsList"></app-product-list>
+      }
+    } @else {
+      <app-product-list-skeleton></app-product-list-skeleton>
+    }
+  </section>
 </main>
 
 <app-footer />
