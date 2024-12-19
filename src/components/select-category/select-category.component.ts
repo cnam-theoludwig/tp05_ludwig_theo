@@ -4,11 +4,12 @@ import { FormsModule } from "@angular/forms"
 import { Observable } from "rxjs"
 import { Category } from "../../models/category"
 import { ApiService } from "../../services/api.service"
+import { SelectDirective } from "../../directives/select/select.directive"
 
 @Component({
   selector: "app-select-category",
   standalone: true,
-  imports: [FormsModule, AsyncPipe],
+  imports: [FormsModule, AsyncPipe, SelectDirective],
   templateUrl: "./select-category.component.html",
   styleUrl: "./select-category.component.css",
 })
