@@ -43,7 +43,10 @@ export class CartPageComponent {
 
   public updateQuantity(product: ProductWithQuantity, event: Event): void {
     const target = event.target as HTMLInputElement
-    const quantity = target.valueAsNumber
+    let quantity = target.valueAsNumber
+    if (Number.isNaN(quantity)) {
+      quantity = 0
+    }
     this.store.dispatch(new CartEditProductQuantity(product, quantity))
   }
 }
